@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>SaferPay JSON API implementation in C#</Description>
+    <Copyright>Bombsquad Inc 2016</Copyright>
+    <AssemblyTitle>Saferpay JSON API</AssemblyTitle>
+    <VersionPrefix>0.2.0</VersionPrefix>
+    <Authors>bmbsqd;durango</Authors>
+    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
+    <DebugType>portable</DebugType>
+    <AssemblyName>saferpay-net</AssemblyName>
+    <PackageId>SaferPay</PackageId>
+    <PackageTags>saferpay;async;rest;json;api</PackageTags>
+    <PackageReleaseNotes>Corification!</PackageReleaseNotes>
+    <PackageIconUrl>http://www.gravatar.com/avatar/778137d42770f739df317b3cde5454ed.png?s=128</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/bmbsqd/saferpay-net/</PackageProjectUrl>
+    <PackageLicenseUrl>http://creativecommons.org/licenses/by-sa/3.0/</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/bmbsqd/saferpay-net/</RepositoryUrl>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.3' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="System.Linq" Version="4.1.0" />
+    <PackageReference Include="System.Net.Http" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <PackageReference Include="System.Net.Http" Version="4.1.1" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
