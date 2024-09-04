@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>SaferPay JSON API implementation in C#</Description>
@@ -6,11 +6,11 @@
     <AssemblyTitle>Saferpay JSON API</AssemblyTitle>
     <VersionPrefix>0.2.0</VersionPrefix>
     <Authors>bmbsqd;durango</Authors>
-    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <DebugType>portable</DebugType>
     <AssemblyName>saferpay-net</AssemblyName>
     <PackageId>SaferPay</PackageId>
-    <PackageTags>saferpay;async;rest;json;api</PackageTags>
+    <PackageTags>saferpay</PackageTags>
     <PackageReleaseNotes>Corification!</PackageReleaseNotes>
     <PackageIconUrl>http://www.gravatar.com/avatar/778137d42770f739df317b3cde5454ed.png?s=128</PackageIconUrl>
     <PackageProjectUrl>https://github.com/bmbsqd/saferpay-net/</PackageProjectUrl>
@@ -32,15 +32,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Linq" Version="4.1.0" />
-    <PackageReference Include="System.Net.Http" Version="4.1.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
-    <PackageReference Include="System.Net.Http" Version="4.1.1" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+  <ItemGroup>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
 </Project>

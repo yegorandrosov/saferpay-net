@@ -6,69 +6,74 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SaferPay.Models;
 
-namespace SaferPay {
-	public interface ISaferPayClient : IDisposable {
-		Task<TResponse> SendAsync<TResponse, TRequest>( string path, TRequest request )
-			where TRequest : RequestBase
-			where TResponse : ResponseBase;
-	}
+namespace SaferPay
+{
+    public interface ISaferPayClient : IDisposable
+    {
+        Task<TResponse> SendAsync<TResponse, TRequest>(string path, TRequest request)
+            where TRequest : RequestBase
+            where TResponse : ResponseBase;
+    }
 
-	public class SaferPayClient : ISaferPayClient {
-		protected static readonly MediaTypeWithQualityHeaderValue _applicationJson = MediaTypeWithQualityHeaderValue.Parse( "application/json" );
+    public class SaferPayClient : ISaferPayClient
+    {
+        private static readonly MediaTypeWithQualityHeaderValue ApplicationJson =
+            MediaTypeWithQualityHeaderValue.Parse("application/json");
 
-		protected readonly HttpClient _httpClient;
-		protected readonly SaferPaySettings _settings;
-		private readonly JsonSerializerSettings _jsonSerializerSettings;
+        private readonly HttpClient httpClient;
+        private readonly SaferPaySettings settings;
 
-		public SaferPayClient( HttpClient httpClient, SaferPaySettings settings ) : this( httpClient, settings, JsonSettings.Default )
-		{ }
+        public SaferPayClient(HttpClient httpClient, SaferPaySettings settings)
+        {
+            this.httpClient = httpClient;
+            this.settings = settings;
+        }
 
-		public SaferPayClient( HttpClient httpClient, SaferPaySettings settings, JsonSerializerSettings jsonSerializerSettings )
-		{
-			_httpClient = httpClient;
-			_settings = settings;
-			_jsonSerializerSettings = jsonSerializerSettings;
-		}
+        protected virtual string GenerateRequestId() => Guid.NewGuid().ToString("n");
 
-		protected virtual string GenerateRequestId() => Guid.NewGuid().ToString( "n" );
+        protected virtual RequestHeader CreateRequestHeader() => new RequestHeader
+        {
+            CustomerId = settings.CustomerId,
+            SpecVersion = SaferPayApiConstants.Version,
+            RequestId = GenerateRequestId(),
+            RetryIndicator = 0
+        };
 
-		protected virtual RequestHeader CreateRequestHeader() => new RequestHeader {
-			CustomerId = _settings.CustomerId,
-			SpecVersion = SaferPayApiConstants.Version,
-			RequestId = GenerateRequestId(),
-			RetryIndicator = 0
-		};
+        public virtual async Task<TResponse> SendAsync<TResponse, TRequest>(string path, TRequest request)
+            where TRequest : RequestBase
+            where TResponse : ResponseBase
+        {
+            if (request == null) throw new ArgumentNullException(nameof(request));
+            request.RequestHeader = CreateRequestHeader();
 
-		public virtual async Task<TResponse> SendAsync<TResponse, TRequest>( string path, TRequest request )
-			where TRequest : RequestBase
-			where TResponse : ResponseBase
-		{
-			if( request == null ) throw new ArgumentNullException( nameof( request ) );
-			request.RequestHeader = CreateRequestHeader();
+            var text = JsonConvert.SerializeObject(request);
+            var uri = new Uri(settings.BaseUri, path);
 
-			var text = JsonConvert.SerializeObject( request, _jsonSerializerSettings );
-			var uri = new Uri( _settings.BaseUri, path );
+            var message = new HttpRequestMessage(HttpMethod.Post, uri)
+            {
+                Content = new StringContent(text, Encoding.UTF8, ApplicationJson.MediaType),
+                Headers =
+                {
+                    Accept =
+                    {
+                        ApplicationJson
+                    },
+                    Authorization = new AuthenticationHeaderValue("Basic",
+                        Convert.ToBase64String(Encoding.ASCII.GetBytes($"{settings.Username}:{settings.Password}")))
+                }
+            };
 
-			var message = new HttpRequestMessage( HttpMethod.Post, uri ) {
-				Content = new StringContent( text, Encoding.UTF8, _applicationJson.MediaType ),
-				Headers = {
-					Accept = {
-						_applicationJson
-					},
-					Authorization = new AuthenticationHeaderValue( "Basic", Convert.ToBase64String( Encoding.ASCII.GetBytes( $"{_settings.Username}:{_settings.Password}" ) ) )
-				}
-			};
+            var response = await httpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead);
+            var responseText = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(responseText);
+                throw new SaferPayException(response.StatusCode, errorResponse);
+            }
 
-			var response = await _httpClient.SendAsync( message, HttpCompletionOption.ResponseContentRead );
-			var responseText = await response.Content.ReadAsStringAsync();
-			if( !response.IsSuccessStatusCode ) {
-				var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>( responseText, _jsonSerializerSettings );
-				throw new SaferPayException( response.StatusCode, errorResponse );
-			}
+            return JsonConvert.DeserializeObject<TResponse>(responseText);
+        }
 
-			return JsonConvert.DeserializeObject<TResponse>( responseText, _jsonSerializerSettings );
-		}
-
-		public virtual void Dispose() => _httpClient.Dispose();
-	}
+        public virtual void Dispose() => httpClient.Dispose();
+    }
 }

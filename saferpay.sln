@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaferPay", "SaferPay\SaferPay.csproj", "{BB9D8F54-3464-41C5-81C1-AFEB2D9F8B12}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaferPay.Real.Tests", "SaferPay.Real.Tests\SaferPay.Real.Tests.csproj", "{BA43B42E-F1FE-4038-810D-DE407E0968E3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaferPay.Tests", "SaferPay.Tests\SaferPay.Tests.csproj", "{8EF11BA6-B896-490D-A95C-4A2C10D7D7DC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaferPay.Tests.Shared", "SaferPay.Tests.Shared\SaferPay.Tests.Shared.csproj", "{EE3C8D47-0FF2-4CFA-8226-A632EDF03E11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SaferPay", "SaferPay\SaferPay.csproj", "{BB9D8F54-3464-41C5-81C1-AFEB2D9F8B12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,20 +15,11 @@ Global
 		{BB9D8F54-3464-41C5-81C1-AFEB2D9F8B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB9D8F54-3464-41C5-81C1-AFEB2D9F8B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB9D8F54-3464-41C5-81C1-AFEB2D9F8B12}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA43B42E-F1FE-4038-810D-DE407E0968E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA43B42E-F1FE-4038-810D-DE407E0968E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA43B42E-F1FE-4038-810D-DE407E0968E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA43B42E-F1FE-4038-810D-DE407E0968E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EF11BA6-B896-490D-A95C-4A2C10D7D7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EF11BA6-B896-490D-A95C-4A2C10D7D7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EF11BA6-B896-490D-A95C-4A2C10D7D7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EF11BA6-B896-490D-A95C-4A2C10D7D7DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE3C8D47-0FF2-4CFA-8226-A632EDF03E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE3C8D47-0FF2-4CFA-8226-A632EDF03E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE3C8D47-0FF2-4CFA-8226-A632EDF03E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE3C8D47-0FF2-4CFA-8226-A632EDF03E11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37D5BDB5-F9CB-47D9-8790-FB1B4C593A36}
 	EndGlobalSection
 EndGlobal
