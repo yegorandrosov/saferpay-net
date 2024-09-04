@@ -8,7 +8,7 @@ using SaferPay.Models;
 
 namespace SaferPay
 {
-    public interface ISaferPayClient : IDisposable
+    public interface ISaferPayClient
     {
         Task<TResponse> SendAsync<TResponse, TRequest>(string path, TRequest request)
             where TRequest : RequestBase
@@ -17,9 +17,6 @@ namespace SaferPay
 
     public class SaferPayClient : ISaferPayClient
     {
-        private static readonly MediaTypeWithQualityHeaderValue ApplicationJson =
-            MediaTypeWithQualityHeaderValue.Parse("application/json");
-
         private readonly HttpClient httpClient;
         private readonly SaferPaySettings settings;
 
@@ -44,24 +41,23 @@ namespace SaferPay
             where TResponse : ResponseBase
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
+            
             request.RequestHeader = CreateRequestHeader();
 
-            var text = JsonConvert.SerializeObject(request);
-            var uri = new Uri(settings.BaseUri, path);
+            var jsonPayload = JsonConvert.SerializeObject(request);
+            var baseUri = settings.Environment == ESaferPayEnvironment.Test
+                ? "https://test.saferpay.com/api/"
+                : "https://www.saferpay.com/api";
+            var endpointUri = new Uri(new Uri(baseUri), path);
 
-            var message = new HttpRequestMessage(HttpMethod.Post, uri)
+            var message = new HttpRequestMessage(HttpMethod.Post, endpointUri)
             {
-                Content = new StringContent(text, Encoding.UTF8, ApplicationJson.MediaType),
-                Headers =
-                {
-                    Accept =
-                    {
-                        ApplicationJson
-                    },
-                    Authorization = new AuthenticationHeaderValue("Basic",
-                        Convert.ToBase64String(Encoding.ASCII.GetBytes($"{settings.Username}:{settings.Password}")))
-                }
+                Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json")
             };
+
+            message.Headers.Authorization = new AuthenticationHeaderValue("Basic",
+                Convert.ToBase64String(Encoding.ASCII.GetBytes($"{settings.Username}:{settings.Password}")));
+            message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await httpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead);
             var responseText = await response.Content.ReadAsStringAsync();
@@ -73,7 +69,5 @@ namespace SaferPay
 
             return JsonConvert.DeserializeObject<TResponse>(responseText);
         }
-
-        public virtual void Dispose() => httpClient.Dispose();
     }
 }
