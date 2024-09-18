@@ -3,3 +3,5 @@
 .vs/
 .vscode/
 .idea
+/SaferPay/Properties/PublishProfiles
+*.user

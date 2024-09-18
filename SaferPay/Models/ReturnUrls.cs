@@ -8,4 +8,9 @@ namespace SaferPay.Models
 		public Uri Fail { get; set; }
 		public Uri Abort { get; set; }
 	}
+
+	public class ReturnUrl
+	{
+		public Uri Url { get; set; }
+	}
 }

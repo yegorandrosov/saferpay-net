@@ -6,6 +6,6 @@ namespace SaferPay.Models
 		public InitializationPayment Payment { get; set; }
 		public InitializationPaymentMeans PaymentMeans { get; set; }
 		public Payer Payer { get; set; }
-		public ReturnUrls ReturnUrls { get; set; }
+		public ReturnUrl ReturnUrl { get; set; }
 	}
 }
