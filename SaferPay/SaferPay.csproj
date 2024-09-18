@@ -27,6 +27,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>SaferPay</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>0.2.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
