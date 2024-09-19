@@ -28,6 +28,7 @@
     <Title>SaferPay</Title>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>0.2.2</Version>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
