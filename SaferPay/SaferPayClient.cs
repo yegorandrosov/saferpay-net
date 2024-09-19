@@ -63,8 +63,7 @@ namespace SaferPay
             var responseText = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(responseText);
-                throw new SaferPayException(response.StatusCode, errorResponse);
+                throw new SaferPayException(response.StatusCode, responseText);
             }
 
             return JsonConvert.DeserializeObject<TResponse>(responseText);
